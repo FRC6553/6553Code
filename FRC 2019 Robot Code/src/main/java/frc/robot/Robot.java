@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   public static int rightGrabberDirection = 1;
   public static double leftGrabberSpeed = 0.4;
   public static double rightGrabberSpeed = 0.4;
-
+  public double grabberAcceleration = 0;
 
 
   Command m_autonomousCommand;
@@ -147,15 +147,30 @@ public class Robot extends TimedRobot {
   //myDrive.arcadeDrive(-driveStick.getY(),driveStick.getX());
   //Trigger & Side Button
     if (driveStick.getRawButton(1)&&!driveStick.getRawButton(2)){
-    leftWheel.setSpeed(leftGrabberDirection*leftGrabberSpeed);
-    rightWheel.setSpeed(rightGrabberDirection*rightGrabberSpeed);
+      grabberAcceleration = grabberAcceleration + 0.01; 
+      if (grabberAcceleration >= 1.0){
+        grabberAcceleration = 1;
+      }
+    leftWheel.setSpeed(leftGrabberDirection*leftGrabberSpeed*grabberAcceleration);
+    rightWheel.setSpeed(rightGrabberDirection*rightGrabberSpeed*grabberAcceleration);
   }else if (driveStick.getRawButton(2)&&!driveStick.getRawButton(1)){
     leftWheel.setSpeed(-1*leftGrabberDirection*leftGrabberSpeed);
     rightWheel.setSpeed(-1*rightGrabberDirection*rightGrabberSpeed);
   }else{
+    grabberAcceleration = 0;
    leftWheel.stopMotor();
    rightWheel.stopMotor();
   }
+  // if (driveStick.getRawButton(1)&&!driveStick.getRawButton(2)){
+  //   leftWheel.setSpeed(leftGrabberDirection*leftGrabberSpeed);
+  //   rightWheel.setSpeed(rightGrabberDirection*rightGrabberSpeed);
+  // }else if (driveStick.getRawButton(2)&&!driveStick.getRawButton(1)){
+  //   leftWheel.setSpeed(-1*leftGrabberDirection*leftGrabberSpeed);
+  //   rightWheel.setSpeed(-1*rightGrabberDirection*rightGrabberSpeed);
+  // }else{
+  //  leftWheel.stopMotor();
+  //  rightWheel.stopMotor();
+  //}
 }
   /**
    * This function is called periodically during test mode.
