@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.Compressor;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -40,6 +41,9 @@ public class Robot extends TimedRobot {
   public static Spark leftReverseWheel;
   public static Joystick driveStick;
   public static DifferentialDrive myDrive;
+  public static XboxController xbox;
+  public static DoubleSolenoid front;
+  public static DoubleSolenoid rear;
 //!!controllVariables for grabbers
   public static int leftGrabberDirection = 1;
   public static int rightGrabberDirection = 1;
@@ -143,7 +147,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-  
+  //Joystick
   //myDrive.arcadeDrive(-driveStick.getY(),driveStick.getX());
   //Trigger & Side Button
     if (driveStick.getRawButton(1)&&!driveStick.getRawButton(2)){
@@ -161,16 +165,19 @@ public class Robot extends TimedRobot {
    leftWheel.stopMotor();
    rightWheel.stopMotor();
   }
-  // if (driveStick.getRawButton(1)&&!driveStick.getRawButton(2)){
-  //   leftWheel.setSpeed(leftGrabberDirection*leftGrabberSpeed);
-  //   rightWheel.setSpeed(rightGrabberDirection*rightGrabberSpeed);
-  // }else if (driveStick.getRawButton(2)&&!driveStick.getRawButton(1)){
-  //   leftWheel.setSpeed(-1*leftGrabberDirection*leftGrabberSpeed);
-  //   rightWheel.setSpeed(-1*rightGrabberDirection*rightGrabberSpeed);
-  // }else{
-  //  leftWheel.stopMotor();
-  //  rightWheel.stopMotor();
-  //}
+//Xbox controller
+//Start Button
+
+//Back Button
+
+//X Button
+
+//Y Button
+
+//A Button
+
+//B Button
+
 }
   /**
    * This function is called periodically during test mode.
