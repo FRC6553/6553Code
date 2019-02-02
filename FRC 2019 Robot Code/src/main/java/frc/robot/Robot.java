@@ -32,7 +32,8 @@ public class Robot extends TimedRobot {
   public static Spark leftMotors;
   public static Spark rightMotors;
   public static SpeedControllerGroup leftDrive;
-	public static SpeedControllerGroup rightDrive;
+  public static SpeedControllerGroup rightDrive;
+  public static Spark elevatorMotor;
   //pneumatics
   public static XboxController xbox;
   public static DoubleSolenoid front;
@@ -116,7 +117,7 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   //Joystick
     myDrive.arcadeDrive(-driveStick.getY(),driveStick.getX());
-
+    
   //Trigger & Side Button
     if (driveStick.getRawButton(1)&&!driveStick.getRawButton(2)){
       grabberAcceleration = grabberAcceleration + 0.01; 
@@ -166,6 +167,8 @@ else {
 // else {
 //   rear.set(DoubleSolenoid.Value.kOff);
 // }
+//xbox axis
+
 
 }
 
