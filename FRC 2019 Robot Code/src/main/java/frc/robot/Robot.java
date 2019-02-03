@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Compressor;
 
+
 public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
@@ -44,8 +45,13 @@ public class Robot extends TimedRobot {
   public static int rightGrabberDirection = 1;
   public static double leftGrabberSpeed = 0.4;
   public static double rightGrabberSpeed = 0.4;
-  public double grabberAcceleration = 0;
-   
+  public double grabberSpeedRatio = 0;
+  public double grabberSpeedStep = 0.01;
+//!!ControllVariables for Elevator
+public static double elevatorMotorSpeed = 1;
+public static int elevatorMotorDirection = 1;
+public double elevatorMotorSpeedRatio = 0;
+public double elevatorMotorSpeedStep = 0.05;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -69,6 +75,7 @@ public class Robot extends TimedRobot {
     front = new DoubleSolenoid(1,0);
     air = new Compressor(0);
     air.setClosedLoopControl(false);
+    elevatorMotor = new Spark(5);
    // m_oi = new OI();
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -120,17 +127,17 @@ public class Robot extends TimedRobot {
     
   //Trigger & Side Button
     if (driveStick.getRawButton(1)&&!driveStick.getRawButton(2)){
-      grabberAcceleration = grabberAcceleration + 0.01; 
-      if (grabberAcceleration >= 1.0){
-        grabberAcceleration = 1;
+      grabberSpeedRatio = grabberSpeedRatio + grabberSpeedStep; 
+      if (grabberSpeedRatio >= 1.0){
+        grabberSpeedRatio = 1;
       }
-    leftWheel.setSpeed(leftGrabberDirection*leftGrabberSpeed*grabberAcceleration);
-    rightWheel.setSpeed(rightGrabberDirection*rightGrabberSpeed*grabberAcceleration);
+    leftWheel.setSpeed(leftGrabberDirection * leftGrabberSpeed * grabberSpeedRatio);
+    rightWheel.setSpeed(rightGrabberDirection * rightGrabberSpeed * grabberSpeedRatio);
   }else if (driveStick.getRawButton(2)&&!driveStick.getRawButton(1)){
-    leftWheel.setSpeed(-1*leftGrabberDirection*leftGrabberSpeed);
-    rightWheel.setSpeed(-1*rightGrabberDirection*rightGrabberSpeed);
+    leftWheel.setSpeed(-1*leftGrabberDirection * leftGrabberSpeed);
+    rightWheel.setSpeed(-1*rightGrabberDirection * rightGrabberSpeed);
   }else{
-    grabberAcceleration = 0;
+    grabberSpeedRatio = 0;
    leftWheel.stopMotor();
    rightWheel.stopMotor();
   }
@@ -168,8 +175,22 @@ else {
 //   rear.set(DoubleSolenoid.Value.kOff);
 // }
 //xbox axis
+if(xbox.getRawButton(5)){
+  elevatorMotorSpeedRatio = elevatorMotorSpeedRatio + elevatorMotorSpeedStep; 
+  if (elevatorMotorSpeedRatio >= 1.0){
+    elevatorMotorSpeedRatio = 1;
+  }
+  elevatorMotor.setSpeed(elevatorMotorDirection * elevatorMotorSpeed * elevatorMotorSpeedRatio);
+}else if(xbox.getRawButton(6)){
+  elevatorMotorSpeedRatio = elevatorMotorSpeedRatio + elevatorMotorSpeedStep; 
+  if (elevatorMotorSpeedRatio >= 1.0){
+    elevatorMotorSpeedRatio = 1;
+  }
+  elevatorMotor.setSpeed(-elevatorMotorDirection * elevatorMotorSpeed * elevatorMotorSpeedRatio);
+}else{
+  elevatorMotor.stopMotor();
 
-
+}
 }
 
   @Override
